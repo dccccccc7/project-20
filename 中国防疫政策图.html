@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+    <title>ECharts China Map</title>
+    <style>
+      #china-map {
+        width: 1000px;
+        height: 800px;
+        position: absolute;
+        left: calc(50% - 500px);
+        top: 100px;
+      }
+    </style>
+    <script
+      type="text/javascript"
+      src="https://unpkg.com/echarts/dist/echarts.min.js"
+    ></script>
+    <script type="text/javascript" src="./js/map/china.js"></script>
+  </head>
+
+  <body>
+    <div id="china-map"></div>
+
+    <script>
+      var myChart = echarts.init(document.getElementById("china-map"));
+
+      var catches = {};
+
+      var provinces = [
+        "shanghai",
+        "hebei",
+        "shanxi",
+        "neimenggu",
+        "liaoning",
+        "jilin",
+        "heilongjiang",
+        "jiangsu",
+        "zhejiang",
+        "anhui",
+        "fujian",
+        "jiangxi",
+        "shandong",
+        "henan",
+        "hubei",
+        "hunan",
+        "guangdong",
+        "guangxi",
+        "hainan",
+        "sichuan",
+        "guizhou",
+        "yunnan",
+        "xizang",
+        "shanxi1",
+        "gansu",
+        "qinghai",
+        "ningxia",
+        "xinjiang",
+        "beijing",
+        "tianjin",
+        "chongqing",
+        "xianggang",
+        "aomen",
+      ];
+
+      var provincesText = [
+        "上海",
+        "河北",
+        "山西",
+        "内蒙古",
+        "辽宁",
+        "吉林",
+        "黑龙江",
+        "江苏",
+        "浙江",
+        "安徽",
+        "福建",
+        "江西",
+        "山东",
+        "河南",
+        "湖北",
+        "湖南",
+        "广东",
+        "广西",
+        "海南",
+        "四川",
+        "贵州",
+        "云南",
+        "西藏",
+        "陕西",
+        "甘肃",
+        "青海",
+        "宁夏",
+        "新疆",
+        "北京",
+        "天津",
+        "重庆",
+        "香港",
+        "澳门",
+        "台湾"
+      ];
+
+      var url1 = [
+        "http://sh.bendibao.com/news/2021721/241986.shtm",
+        "http://sjz.bendibao.com/live/2020320/50468.shtm",
+        "http://ty.bendibao.com/news/20201111/47720.shtm",
+        "http://hu.bendibao.com/news/2020430/40388.shtm",
+        "http://sy.bendibao.com/news/2021114/60997.shtm",
+        "http://cc.bendibao.com/news/2020224/47697.shtm",
+        "http://heb.bendibao.com/news/202049/54293.shtm",
+        "http://nj.bendibao.com/news/2020618/88731.shtm",
+        "http://hz.bendibao.com/news/2020213/79769.shtm",
+        "http://m.hf.bendibao.com/mip/70509.shtm",
+        "http://fz.bendibao.com/news/202083/54549.shtm",
+        "http://nc.bendibao.com/news/202121/64822.shtm",
+        "http://jn.bendibao.com/news/2020221/52676.shtm",
+        "http://zz.bendibao.com/news/2021111/77209.shtm",
+        "http://wh.bendibao.com/news/2020214/107580.shtm",
+        "http://cs.bendibao.com/news/2020616/61743.shtm",
+        "http://jt.gz.bendibao.com/news/2020428/264937.shtml",
+        "http://nn.bendibao.com/news/2020420/49775.shtm",
+        "http://haikou.bendibao.com/news/2020424/44733.shtm",
+        "http://m.wenda.bendibao.com/mip/123468.shtm",
+        "http://gy.bendibao.com/news/2020318/48564.shtm",
+        "http://m.km.bendibao.com/mip/55597.shtm",
+        "http://cd.bendibao.com/news/202184/127041.shtm",
+        "http://xa.bendibao.com/news/2020429/73098.shtm",
+        "http://lz.bendibao.com/news/2021315/50192.shtm",
+        "http://xn.bendibao.com/news/2021115/1815.shtm",
+        "http://yc.bendibao.com/live/202117/39109.shtm",
+        "http://wlmq.bendibao.com/news/2020731/41923.shtm",
+        "https://new.qq.com/omn/20210805/20210805A09V3000.html",
+        "http://tj.bendibao.com/news/20201110/94952.shtm",
+        "http://m.cq.bendibao.com/mip/83289.shtm",
+        "http://m.bendibao.com/mip/863109.html",
+        "http://zh.bendibao.com/news/202085/54136.shtm",
+        "http://shtaixie.org/hot/762-cn.html"
+      ];
+
+
+
+
+
+      loadMap("china", "中国防疫政策图");
+
+      function loadMap(mapType, name) {
+        var option = {
+          title: {
+            text: name || mapType,
+            left: "center",
+          },
+          series: [
+            {
+              name: name || mapType,
+              type: "map",
+              mapType,
+              roam: true,
+              itemStyle: {
+
+                normal: {
+
+                  label: {
+                    show: true,
+                    textStyle: {
+                      color: "rgba(255,255,255,0)",
+                    },
+                  },
+                },
+              },
+              aspectScale: mapType === "china" ? 0.75 : 1,
+              top: "10%",
+            },
+          ],
+
+        };
+
+        myChart.clear();
+
+        myChart.setOption(option);
+
+        myChart.off("click");
+
+        if (mapType === "china") {
+          myChart.on("click", function (param) {
+            for (var i = 0; i < provincesText.length; i++) {
+              if (param.name === provincesText[i]) {
+                window.open(url1[i]);
+
+                break;
+              }
+            }
+
+            oBack.style.setProperty('display', 'block');
+          });
+        }
+      }
+
+
+
+      function loadBdScript(scriptId, url, callback) {
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        if (script.readyState) {
+          //IE
+          script.onreadystatechange = function () {
+            if (
+              script.readyState === "loaded" ||
+              script.readyState === "complete"
+            ) {
+              script.onreadystatechange = null;
+              callback();
+            }
+          };
+        } else {
+          // Others
+          script.onload = function () {
+            callback();
+          };
+        }
+        script.src = url;
+        script.id = scriptId;
+        document.getElementsByTagName("head")[0].appendChild(script);
+      }
+    </script>
+  </body>
+</html>
